@@ -13,7 +13,9 @@ const rename = require("gulp-rename");
 const sass = require("gulp-sass");
 const imagemin = require('gulp-imagemin')
 const uglify = require("gulp-babel-minify");
-let changed = require('gulp-changed');
+const changed = require('gulp-changed');
+const useref = require('gulp-useref');
+
 
 
 // Load package.json for banner
@@ -136,9 +138,18 @@ function watchFiles() {
     gulp.watch("./**/*.html", browserSyncReload);
 }
 
+function indexFile() {
+    let src = '*.html', dst = 'build/';
+
+    return gulp.src(src)
+        .pipe(useref())
+        .pipe(gulp.dest(dst))
+
+}
+
 // Define complex tasks
 const vendor = gulp.series(clean, modules);
-const build = gulp.series(vendor, gulp.parallel(css, js, imgSquash));
+const build = gulp.series(vendor, gulp.parallel(css, js, imgSquash, indexFile));
 const watch = gulp.series(build, gulp.parallel(watchFiles, browserSync));
 
 // Export tasks
