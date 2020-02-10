@@ -14,7 +14,16 @@ jobs:
         node-version: [12.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout builder repo
+        uses: actions/checkout@v2
+        with:
+          path: main
+
+      - name: Checkout profile repo
+        uses: actions/checkout@v2
+        with:
+          repository: kimbugp/kimbugp.github.io
+          path: main
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
